@@ -1,3 +1,14 @@
 name: John Doe
 age: 30
 email: john.doe@example.com
+
+list:
+  - name: Alice
+    age: 25
+    city: New York
+  - name: Bob
+    age: 30
+    city: London
+  - name: Carol
+    age: 28
+    city: Paris

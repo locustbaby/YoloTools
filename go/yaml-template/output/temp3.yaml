@@ -1,0 +1,13 @@
+templatelist:
+  - name: "Alice"
+    age: 25
+    city: "New York"
+    status: Youngster
+  - name: "Bob"
+    age: 30
+    city: "London"
+    status: Senior Citizen
+  - name: "Carol"
+    age: 28
+    city: "Paris"
+    status: Youngster

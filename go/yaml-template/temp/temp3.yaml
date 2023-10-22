@@ -1,0 +1,7 @@
+templatelist:
+{{- range .list }}
+  - name: "{{.name}}"
+    age: {{.age}}
+    city: "{{.city}}"
+    status: {{if ge .age 30}}Senior Citizen{{else}}Youngster{{end}}
+{{- end }}
