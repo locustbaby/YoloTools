@@ -1,5 +1,14 @@
 # YoloTools
-Some tools I always use.
+Some tools I think useful.
 
+Tools list:
+1. Rust [get_cpu](./rust/get_cpu/) cores num, get limit if k8s pod.
+2. [Yaml-template](./go/yaml-template/), helm is a good way to orginaze application, but when we need multi-region, Yaml-template can simple generate yaml with template and values.
+3. An example generate [rotate log](./go/test-log/) with zapcore.
+
+
+
+Todo list:
 1. Is there a framework that can generate bilingual programs?
-2. need a simple DAG workflow sdk 
+2. Need a simple DAG [workflow server/SDK](./go/workflow/), workflow is base of automation.
+3. Generate [cluster-admin](./shell/admin-kubeconfig/) kubeconfig.
