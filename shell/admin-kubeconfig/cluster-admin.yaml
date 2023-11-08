@@ -1,0 +1,47 @@
+# cluster-admin-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: cluster-admin-sa  # 替换为你的 ServiceAccount 名称
+  namespace: kube-system
+---
+# cluster-admin-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-admin-role
+rules:
+  - verbs:
+      - '*'
+    apiGroups:
+      - '*'
+    resources:
+      - '*'
+  - verbs:
+      - '*'
+    nonResourceURLs:
+      - '*'
+
+---
+# cluster-admin-binding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-admin-binding
+subjects:
+- kind: ServiceAccount
+  name: cluster-admin-sa  # 替换为你的 ServiceAccount 名称
+  namespace: kube-system  # 替换为 ServiceAccount 所在的命名空间，如果在默认命名空间，请保留该行
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin-role  # 替换为你创建的 ClusterRole 的名称
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/service-account-token
+metadata:
+ name: cluster-admin-sa-secret
+ namespace: kube-system
+ annotations:
+   kubernetes.io/service-account.name: "cluster-admin-sa"
