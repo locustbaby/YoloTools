@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/locustbaby/YoloTools/tree/main/go/yaml-template/utils"
+	"github.com/locustbaby/YoloTools/go/yaml-template/utils"
 )
 
 func main() {
