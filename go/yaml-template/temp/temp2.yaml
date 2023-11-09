@@ -1,3 +1,0 @@
-temp2lname: {{ .name }}
-temp2age: {{ .age }}
-temp2email: {{ .email }}
