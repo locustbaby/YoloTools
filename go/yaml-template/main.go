@@ -5,10 +5,8 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"strings"
-	"text/template"
 
-	"gopkg.in/yaml.v2"
+	"github.com/locustbaby/YoloTools/tree/main/go/yaml-template/utils"
 )
 
 func main() {
@@ -31,15 +29,14 @@ func main() {
 	fmt.Println("Output directory path:", *outputDir)
 
 	// Read values.yaml file
-	values, err := os.ReadFile(*valuesFile)
+	values, err := utils.ReadFile(*valuesFile)
 	if err != nil {
 		fmt.Println("Error reading values.yaml:", err)
 		return
 	}
 
 	// Parse values.yaml file and convert its content to a Go map
-	valuesMap := make(map[string]interface{})
-	err = yaml.Unmarshal(values, &valuesMap)
+	valuesMap, err := utils.ParseYAML(values)
 	if err != nil {
 		fmt.Println("Error parsing values.yaml:", err)
 		return
@@ -47,7 +44,7 @@ func main() {
 
 	// Create the output directory
 	if *outputDir != "" {
-		err = os.MkdirAll(*outputDir, 0755)
+		err = utils.CreateDirectory(*outputDir)
 		if err != nil {
 			fmt.Println("Error creating output directory:", err)
 			return
@@ -55,8 +52,7 @@ func main() {
 	}
 
 	// Traverse all files in the templates directory
-	templatesDir := *templateFile
-	err = filepath.Walk(templatesDir, func(path string, info os.FileInfo, err error) error {
+	err = filepath.Walk(*templateFile, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -66,37 +62,23 @@ func main() {
 		}
 
 		// Read the template file
-		templateContent, err := os.ReadFile(path)
-		if err != nil {
-			return err
-		}
-
-		// Create and parse the template object
-		tmpl, err := template.New("template").Parse(string(templateContent))
+		templateContent, err := utils.ReadFile(path)
 		if err != nil {
 			return err
 		}
 
 		// Render the template
-		var outputContent strings.Builder
-		err = tmpl.Execute(&outputContent, valuesMap)
+		outputContent, err := utils.RenderTemplate(string(templateContent), valuesMap)
 		if err != nil {
 			return err
 		}
 
 		// Print to standard output
-		fmt.Println(outputContent.String())
+		fmt.Println(outputContent)
 
 		// Write to file
 		if *outputDir != "" {
-			outputFileName := filepath.Join(*outputDir, info.Name())
-			outputFile, err := os.Create(outputFileName)
-			if err != nil {
-				return err
-			}
-			defer outputFile.Close()
-
-			_, err = outputFile.WriteString(outputContent.String())
+			err = utils.WriteFile(filepath.Join(*outputDir, info.Name()), outputContent)
 			if err != nil {
 				return err
 			}
